@@ -1,0 +1,44 @@
+CREATE DATABASE labworkn2;
+CREATE  TABLE countries(
+  country_id SERIAL primary key,
+  country_name varchar(255),
+  region_id int,
+  population int
+);
+drop table countries;
+
+SELECT *from countries;
+
+INSERT into  countries VALUES (default, 'Albania', 27, 17000050);
+INSERT into countries (country_name, country_id) VALUES  ('Namibya', default);
+UPDATE countries set region_id =null;
+
+INSERT into countries (country_id, country_name, region_id, population) VALUES (default, 'Uzbekistan', 18, 52222220),
+                                                                               (default , 'Brasil', 78, 78889635),
+                                                                               (default, 'Kazakhstan', 9, 18000000);
+
+ALTER table  countries ALTER column  country_name set default 'KAzakhstan';
+INSERT into countries values (default, default, 99, 1750000);
+INSERT into countries default values ;
+
+CREATE TABLE countries_new(
+  like countries
+);
+
+SELECT *from countries_new;
+
+INSERT into countries_new SELECT * from countries;
+UPDATE countries_new set region_id = 1 where region_id is null;
+
+UPDATE countries_new set population = population + (population*0.1)
+    returning country_name, population as "New Population";
+
+DELETE from countries where population < 100000;
+
+DELETE from countries_new as cn using countries as co
+where cn.country_id=co.country_id
+returning *;
+
+DELETE from countries
+returning *;
+
